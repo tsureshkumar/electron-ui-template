@@ -14,13 +14,16 @@ function transformManifestFile(payload) {
 
 module.exports = {
     mode: isDev ? "development" : "production",
+    target: 'electron-renderer',
+    devtool: 'source-map',
     entry: {
         polyfill: "@babel/polyfill", // enables async-await
-        jirafast: "./src/index.js"
+        jirafast: "./src/index.js",
+        jiratron: "./src/electron.ts"
     },
     output: {
         path: path.resolve(__dirname, './dist'),
-        filename: "js/[name].js", // relative to the outputPath (defaults to / or root of the site)
+        filename: "[name].js", // relative to the outputPath (defaults to / or root of the site)
         library: "jirafast"
     },
     performance: {
@@ -52,6 +55,10 @@ module.exports = {
                     modules: true,
                     localIdentName: "[name]__[local]___[hash:base64:5]"
                 }
+            },
+            {
+                test: /\.(woff|woff2|eot|ttf|svg)$/,
+                loader: 'file-loader?name=fonts/[name].[ext]'
             },
             {
                 test: /\.s[ac]ss$/i,

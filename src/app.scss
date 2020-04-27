@@ -1,14 +1,14 @@
 // google fonts
-@font-face {
-  font-family: 'Archivo Bold';
-  src: local('Archivo Bold'), url('./fonts/Archivo/Archivo-Bold.ttf') format('truetype');
-}
-@font-face {
-  font-family: 'Archivo Regular';
-  src: local('Archivo Regular'), url('./fonts/Archivo/Archivo-Regular.ttf') format('truetype');
-}
-
-
+// @font-face {
+//   font-family: 'Archivo Bold';
+//   src: local('Archivo Bold'), url('./fonts/Archivo/Archivo-Bold.ttf') format('truetype');
+// }
+// @font-face {
+//   font-family: 'Archivo Regular';
+//   src: local('Archivo Regular'), url('./fonts/Archivo/Archivo-Regular.ttf') format('truetype');
+// }
+// 
+// 
 // create random background color
 @mixin random-bgr() {
   background: rgb(random(255), random(255), random(255));
@@ -104,125 +104,13 @@ $desktop-width: 1024px;
   @include tablet();
   @include phone();
 
-  font-family: "Archivo Regular";
-
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: left;
   flex: 1;
 
-  .timerContainer {
-    text-align: center;
-    display: flex;
-    flex-direction: row-reverse;
-    align-items: flex-start;
-    // background-color: blue;
-    align-self: stretch;
-
-    .controls {
-      //background-color: rgba(97, 218, 251);
-      background-color: rgba(236, 239, 241,0.5);
-      display: flex;
-      flex-direction: column;
-      align-self: flex-start;
-      top: 0;
-      right:0;
-      min-height: 100vh;
-      z-index: 100;
-      position: absolute;
-      width: 40px;
-    }
-
-    .timerWithLaps {
-      display: flex;
-      align-self: stretch;
-      // background-color: red;
-      flex-direction: column;
-      flex-basis: 30%;
-      flex: 1;
-
-      .mainTimer {
-        @extend .mainTimerResponsive;
-        font-family: "Archivo Bold";
-        display: flex;
-        justify-content: space-around;
-        background-color: white;
-        top: 0;
-        position: sticky;
-        // box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
-        // 0px 0px 0px 0px rgba(0, 0, 0, 0.14), 0px 0px 0px 0px rgba(0, 0, 0, 0.12);
-        // transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-      }
-      .lapTimer {
-        display: flex;
-        justify-content: center;
-        @extend .lapTimerResponsive;
-        background-color: white;
-        top: 0px;
-        position: sticky;
-        box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
-        0px 0px 0px 0px rgba(0, 0, 0, 0.14), 0px 0px 0px 0px rgba(0, 0, 0, 0.12);
-        transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-
-        & .title {
-//          flex-basis: 20%;
-          padding-right: 5px;
-          flex-shrink: 0.5;
-          text-align: center;
-          font-size: .5em;
-        }
-        & .content { }
-      }
-      .lapsContainer {
-        display: flex;
-        // background-color: rgb(179, 28, 161);
-        flex-direction: row;
-        flex-wrap: wrap;
-        align-items: stretch;
-        justify-content: space-evenly;
-        align-content: flex-end;
-
-        .panel {
-          @include Card(".number", ".time");
-          display: flex;
-          // background-color: rgb(21, 82, 21);
-          border: 0px solid red;
-          flex-direction: row;
-          overflow: hidden;
-          //width: 300px;
-          flex-basis: 20%;
-          align-content: space-between;
-
-          .number {
-            // background-color: rgb(227, 210, 31);
-          }
-
-          .time {
-            // background-color: rgb(245, 84, 14);
-          }
-        }
-      }
-    }
-
-    .timer {
-      display:flex;
-      justify-content: flex-end;
-      align-items:baseline;
-      align-content: flex-start;
-      text-align: center;
-      flex-wrap: wrap;
-
-      & .sep {
-        padding: 0px 15px 0px 15px;
-      }
-
-      & .millis {
-        padding-left: 5px;
-        font-size: .5em;
-      }
-    }
-  }
 }
 
 #root {
