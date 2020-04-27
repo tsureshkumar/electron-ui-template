@@ -1,7 +1,8 @@
 
 import { createStore, combineReducers } from "redux";
 import * as reducers from "./reducers";
-import { loadState, storeState } from "./localStore";
+// import { loadState, storeState } from "./localStore";
+import { loadState, storeState } from "./electronStore";
 import throttle from "lodash/throttle";
 
 const rootReducer = combineReducers(reducers);
