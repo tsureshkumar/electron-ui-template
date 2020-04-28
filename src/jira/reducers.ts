@@ -14,7 +14,7 @@ const initialState: JiraConfig = {
 export function jira(state: JiraConfig = initialState, action: actionsT): JiraConfig {
   switch (action.type) {
   case JIRA.UpdateConfig:
-    return { ...state, ...(action as UpdateConfigMsg).config };
+    return { ...state, ...(action as UpdateConfigMsg).config, configured: true };
     break;
   case JIRA.ResetConfig:
     return initialState;

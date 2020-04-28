@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useState, useCallback, FunctionComponent } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { sendUpdateConfig } from "./actions";
 import { JiraConfig } from "./types";
 import jiraConnector from "jira-connector";
@@ -83,12 +84,21 @@ const JiraConfigForm: FunctionComponent<ConfigT> = ({ config, onConfigUpdate }) 
 };
 
 export const JiraConfigComponent = () => {
+  const history = useHistory();
   const jiraConfig: JiraConfig = useSelector(state => state.jira);
   const dispatch = useDispatch();
-  const updateConfig = useCallback((config: JiraConfig) => dispatch(sendUpdateConfig(config)), [dispatch]);
+  const updateConfig = useCallback((config: JiraConfig) => {
+      dispatch(sendUpdateConfig(config));
+      history.push("/");
+    }, [dispatch]);
   return (
         <div className="JiraConfig">
             <JiraConfigForm config={jiraConfig} onConfigUpdate={updateConfig} />
         </div>
   );
+};
+
+export const isConfigured = () => {
+  const jiraConfig: JiraConfig = useSelector(state => state.jira);
+  return jiraConfig.configured;
 };
