@@ -2,11 +2,16 @@ import * as React from "react";
 import { useState, useCallback, FunctionComponent } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { sendUpdateConfig } from "./actions";
-import { JiraConfig } from "./types";
-import jiraConnector from "jira-connector";
+import { login, loginTrying, loginSuccess, loginFailed } from "./actions";
+import { LoginState, User } from "./types";
 import { makeStyles } from "@material-ui/core/styles";
-import { Button, TextField, Input, FormControl } from "@material-ui/core";
+import { Button, TextField, Input, InputLabel, FormControl } from "@material-ui/core";
+import { Alert, AlertTitle } from "@material-ui/lab";
+
+
+import { getUser } from "./user";
+import { client as jiraClient } from "../jira-client";
+import { JiraConfig, getConfig } from "../jira";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -48,27 +53,21 @@ export const MyIssues = () => {
 };
  */
 
-interface ConfigT {
-  config: JiraConfig;
-  onConfigUpdate: (JiraConfig) => void;
+interface LoginFormProp {
+  username: String;
+  onLogin: (username, password) => void;
 }
 
-const JiraConfigForm: FunctionComponent<ConfigT> = ({ config, onConfigUpdate }) => {
+const LoginForm: FunctionComponent<LoginFormProp> = ({ username, onLogin }) => {
   const classes = useStyles();
-  const [username, updateUserName] = useState(config.user);
-  const [url, updateUrl] = useState(config.url.toString());
+  const [stusername, updateUserName] = useState(username);
+  const [stpasswd, updatePassword] = useState("");
     // const [errors, updateErrors] = useState({ user: false,  url: true, });
 
   const validate = () => {
-    let validUrl = true;
-    try {
-      new URL(`https://{url}`);
-    } catch (e) {
-      validUrl = false;
-    }
     return {
-      user: username.length === 0,
-      url: !validUrl
+      user: stusername.length === 0,
+      pwd: stpasswd.length === 0
     };
   };
   const errors = validate();
@@ -76,53 +75,45 @@ const JiraConfigForm: FunctionComponent<ConfigT> = ({ config, onConfigUpdate }) 
   return (
         <FormControl>
             <TextField
+                id="username"
                 className={classes.textField}
-                error={errors.url}
-                label="jira url"
-                placeholder={url.toString()}
-                fullWidth
-                value={url.toString()}
-                onChange={e => updateUrl(e.target.value)}
-            />
-            <TextField
                 error={errors.user}
-                label="username"
-                placeholder={username}
-                value={username}
+                placeholder="username"
+                fullWidth
+                value={stusername}
                 onChange={e => updateUserName(e.target.value)}
             />
-            <Button disabled={!enabled} onClick={e => onConfigUpdate({ ...config, user: username, url })}>
-                Save
+            <Input
+                id="pwd"
+                type="password"
+                error={errors.pwd}
+                placeholder="password"
+                value={stpasswd}
+                onChange={e => updatePassword(e.target.value)}
+            />
+            <Button disabled={!enabled} onClick={e => onLogin(stusername, stpasswd)}>
+                Login
             </Button>
         </FormControl>
   );
 };
 
-export const JiraConfigComponent = () => {
+export const LoginComponent = () => {
   const classes = useStyles();
   const history = useHistory();
-  const jiraConfig: JiraConfig = useSelector(state => state.jira);
+  const config: JiraConfig = getConfig();
+  const authenticated = useSelector(st => st.auth);
   const dispatch = useDispatch();
-  const updateConfig = useCallback(
-        (config: JiraConfig) => {
-          dispatch(sendUpdateConfig(config));
-          history.push("/");
+  const updateUser = useCallback(
+        (username: string, password: string) => {
+          dispatch(login(config.url, username, password));
         },
         [dispatch]
     );
   return (
         <div className={classes.config}>
-            <JiraConfigForm config={jiraConfig} onConfigUpdate={updateConfig} />
+            {authenticated && authenticated.error && <Alert severity="error">{authenticated.error}</Alert>}
+            <LoginForm username={config?.user} onLogin={updateUser} />
         </div>
   );
-};
-
-export const isConfigured = () => {
-  const jiraConfig: JiraConfig = useSelector(state => state.jira);
-  return jiraConfig.configured;
-};
-
-export const getConfig = () => {
-  const jiraConfig: JiraConfig = useSelector(state => state.jira);
-  return jiraConfig;
 };

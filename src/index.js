@@ -3,7 +3,7 @@ import * as ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import { Provider } from "react-redux";
-import { myCreateStore } from "./mystore";
+import { store } from "./mystore";
 import "typeface-roboto";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
@@ -20,7 +20,6 @@ const theme = createMuiTheme({
     }
 });
 
-const store = myCreateStore();
 
 ReactDOM.render(
     <React.StrictMode>

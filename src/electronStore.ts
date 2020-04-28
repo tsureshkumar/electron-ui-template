@@ -55,10 +55,20 @@ export const loadState = () => {
     return undefined;
   }
 };
+
+function replacer(key, value) {
+  switch (key) {
+  case "password":
+  case "pwd":
+  case "passwd": return null;
+  }
+  return value;
+}
+
 export const storeState = (state) => {
   try {
     if (state !== undefined) {
-      store.set(key, JSON.stringify(state));
+      store.set(key, JSON.stringify(state, replacer));
     }
   } catch (err) {
     console.log("cannot store in persisted store: ", err);

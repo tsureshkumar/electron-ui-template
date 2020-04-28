@@ -1,12 +1,14 @@
 import * as React from "react";
-import { isConfigured, JiraConfigComponent } from "./jira";
-import { Router, Route, Link, HashRouter, Switch } from "react-router-dom";
+import { Router, Route, Link, HashRouter, Switch, withRouter } from "react-router-dom";
 import { createBrowserHistory as createHistory } from "history";
 import { MiniDrawer } from "./components";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { HotKeys, GlobalHotKeys } from "react-hotkeys";
 import "./app.scss";
+
+import { isAuthenticated, LoginComponent } from "./login";
+import { isConfigured, JiraConfigComponent } from "./jira";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -56,9 +58,22 @@ const Content = () => {
 };
 
 function App() {
+  let comp;
   const configured = isConfigured();
+  const authenticated = isAuthenticated();
   if (!configured) {
-      return <JiraConfigComponent />;
+      comp = <JiraConfigComponent />;
+    } else if (!authenticated) {
+      const C = withRouter(LoginComponent);
+      comp = <C />;
+    } else {
+      comp = (
+            <Switch>
+                <Route exact path="/login" component={LoginComponent} />
+                <Route exact path="/config" component={JiraConfigComponent}></Route>
+                <Route path="/" component={Content}></Route>
+            </Switch>
+        );
     }
   const keyMap = {
       COMMAND_HELP: "/"
@@ -69,13 +84,7 @@ function App() {
   return (
         <div className="App">
             <GlobalHotKeys keyMap={keyMap} handlers={keyHandlers} />
-            <HashRouter history={history}>
-                <Switch>
-                    <Route exact path="/login" component={() => <div>Login</div>} />
-                    <Route exact path="/config" component={JiraConfigComponent}></Route>
-                    <Route path="/" component={Content}></Route>
-                </Switch>
-            </HashRouter>
+            <HashRouter history={history}>{comp}</HashRouter>
         </div>
     );
 }

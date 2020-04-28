@@ -3,10 +3,12 @@ import { UpdateConfigMsg, JiraConfig, actionsT, JIRA } from "./types";
 import { sendUpdateConfig, sendResetConfig } from "./actions";
 
 const initialState: JiraConfig = {
-  url: new URL("https://jira.com"),
+  url: "jira.com",
   user: "username",
   configured: false,
 };
+
+
 
 
 // reducers are aka update in elm
@@ -17,7 +19,7 @@ export function jira(state: JiraConfig = initialState, action: actionsT): JiraCo
     return { ...state, ...(action as UpdateConfigMsg).config, configured: true };
     break;
   case JIRA.ResetConfig:
-    return initialState;
+    return { ...state, ...initialState };
     break;
   }
   return state;
