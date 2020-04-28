@@ -5,11 +5,15 @@ import { createBrowserHistory as createHistory } from "history";
 import { MiniDrawer } from "./components";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { HotKeys, GlobalHotKeys } from "react-hotkeys";
 import "./app.scss";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: "flex"
+      display: "flex",
+      minHeight: "100vh",
+      minWidth: "100vh",
+      alignItems: "flex-start"
     },
   appBar: {
       zIndex: theme.zIndex.drawer + 1,
@@ -27,8 +31,8 @@ const useStyles = makeStyles(theme => ({
       ...theme.mixins.toolbar
     },
   content: {
-    flexGrow: 1,
-    padding: theme.spacing(3)
+      flex: 1,
+      display: "flex"
     }
 }));
 
@@ -41,16 +45,13 @@ const Content = () => {
       COMMAND_HELP: () => alert("sub help")
     };
   return (
-        <div>
         <MiniDrawer>
-                <div>
             <HotKeys keyMap={keyMap} handlers={keyHandlers}>
                 <div className={classes.content}>
                     <Route path="/" component={() => <div> HOME </div>}></Route>
                 </div>
             </HotKeys>
         </MiniDrawer>
-        </div>
     );
 };
 
