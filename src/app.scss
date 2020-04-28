@@ -121,3 +121,9 @@ $desktop-width: 1024px;
   align-items: center;
   justify-content: center;
 }
+
+// this is needed for hotkeys. hotkeys by default puts
+// a blue border around elements to mark the scope of hot keys
+// div[tabindex="-1"]:focus {
+//   outline: 0;
+// }

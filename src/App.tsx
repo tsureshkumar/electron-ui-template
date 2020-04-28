@@ -10,48 +10,64 @@ import "./app.scss";
 const useStyles = makeStyles(theme => ({
   root: {
     display: "flex"
-  },
+    },
   appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
-    })
-  },
+      zIndex: theme.zIndex.drawer + 1,
+      transition: theme.transitions.create(["width", "margin"], {
+          easing: theme.transitions.easing.sharp,
+          duration: theme.transitions.duration.leavingScreen
+        })
+    },
   toolbar: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    padding: theme.spacing(0, 1),
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "flex-end",
+      padding: theme.spacing(0, 1),
         // necessary for content to be below app bar
-    ...theme.mixins.toolbar
-  },
+      ...theme.mixins.toolbar
+    },
   content: {
     flexGrow: 1,
     padding: theme.spacing(3)
-  }
+    }
 }));
 
 const Content = () => {
   const classes = useStyles();
+  const keyMap = {
+      COMMAND_HELP: "command+/"
+    };
+  const keyHandlers = {
+      COMMAND_HELP: () => alert("sub help")
+    };
   return (
         <div>
-            <MiniDrawer>
+        <MiniDrawer>
                 <div>
+            <HotKeys keyMap={keyMap} handlers={keyHandlers}>
+                <div className={classes.content}>
                     <Route path="/" component={() => <div> HOME </div>}></Route>
                 </div>
-            </MiniDrawer>
+            </HotKeys>
+        </MiniDrawer>
         </div>
-  );
+    );
 };
 
 function App() {
   const configured = isConfigured();
   if (!configured) {
-    return <JiraConfigComponent />;
-  }
+      return <JiraConfigComponent />;
+    }
+  const keyMap = {
+      COMMAND_HELP: "/"
+    };
+  const keyHandlers = {
+      COMMAND_HELP: () => alert("help")
+    };
   return (
         <div className="App">
+            <GlobalHotKeys keyMap={keyMap} handlers={keyHandlers} />
             <HashRouter history={history}>
                 <Switch>
                     <Route exact path="/login" component={() => <div>Login</div>} />
@@ -60,7 +76,7 @@ function App() {
                 </Switch>
             </HashRouter>
         </div>
-  );
+    );
 }
 
 export default App;
