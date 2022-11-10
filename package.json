@@ -58,7 +58,7 @@
     "babel-plugin-transform-class-properties": "^6.24.1",
     "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^1.0.0",
-    "electron": "^8.2.3",
+    "electron": "^18.3.7",
     "electron-devtools-installer": "^3.0.0",
     "eslint": "^5.15.2",
     "eslint-config-airbnb": "^17.1.0",
